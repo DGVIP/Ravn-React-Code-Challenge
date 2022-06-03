@@ -13,7 +13,9 @@
       "format": "prettier --write **/*.{ts,tsx,css,html,md,json}"
    },
    "dependencies": {
+      "@apollo/client": "^3.6.6",
       "framer-motion": "^6.3.7",
+      "graphql": "^16.5.0",
       "react": "^18.1.0",
       "react-dom": "^18.1.0",
       "react-icons": "^4.4.0",
