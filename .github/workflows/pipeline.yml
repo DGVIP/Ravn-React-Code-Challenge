@@ -1,0 +1,47 @@
+name: Deployment Pipeline
+
+on:
+   push:
+      branches: [main]
+   pull_request:
+      branches: [main]
+      types: [opened, synchronize]
+
+jobs:
+   install:
+      runs-on: ubuntu-20.04
+      steps:
+         - uses: actions/checkout@v3
+         - uses: actions/setup-node@v3
+           with:
+              node-version: 16
+              cache: yarn
+         - name: Install dependencies
+           run: yarn install
+
+   lint:
+      needs: [install]
+      runs-on: ubuntu-20.04
+      steps:
+         - uses: actions/checkout@v3
+         - uses: actions/setup-node@v3
+           with:
+              node-version: 16
+              cache: yarn
+         - name: Install dependencies
+           run: yarn install
+         - name: Run linter
+           run: yarn run lint
+
+   deploy:
+      needs: [lint]
+      runs-on: ubuntu-20.04
+      steps:
+         - uses: actions/checkout@v3
+         - name: Deploy
+           if: ${{ github.event_name == 'push' }}
+           uses: amondnet/vercel-action@v20
+           with:
+              vercel-token: ${{ secrets.VERCEL_TOKEN }}
+              vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+              vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
