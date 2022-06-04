@@ -1,15 +1,46 @@
-import styled from "styled-components";
 import { TaskCard } from "./TaskCard";
+import { useGetTasksQuery } from "../../graphql";
+import { TasksError } from "../../shared/TasksLayout/TasksError";
+import { TasksLoading } from "../../shared/TasksLayout/TasksLoading";
+import { TasksEmpty } from "../../shared/TasksLayout/TasksEmpty/TasksEmpty";
+import { formatTasks, TaskList as ITaskList } from "../../utils/tasks";
+import { Container, TaskColumn, TaskColumnHeader, TaskList } from "./styles";
 
 function Dashboard() {
+   const { data, loading, error, refetch } = useGetTasksQuery({
+      notifyOnNetworkStatusChange: true,
+   });
+
+   if (loading) {
+      return <TasksLoading />;
+   }
+
+   if (error) {
+      return (
+         <TasksError
+            handleRetry={() => {
+               refetch();
+            }}
+         />
+      );
+   }
+
+   if (!data || !data.tasks.length) {
+      return <TasksEmpty />;
+   }
+
+   const newData = formatTasks(data.tasks);
+
    return (
       <Container>
-         {[...Array(5)].map((_, i) => (
-            <TaskColumn key={i}>
-               <TaskColumnHeader>Working (03)</TaskColumnHeader>
+         {Object.keys(newData).map((status) => (
+            <TaskColumn key={status}>
+               <TaskColumnHeader className="font-lg-bold">
+                  {status} ({newData[status as keyof ITaskList].length})
+               </TaskColumnHeader>
                <TaskList>
-                  {[...Array(i % 2 ? 5 : 2)].map((_, i) => (
-                     <TaskCard key={i + 50} />
+                  {newData[status as keyof ITaskList].map((task) => (
+                     <TaskCard key={task.id} task={task} />
                   ))}
                </TaskList>
             </TaskColumn>
@@ -17,34 +48,5 @@ function Dashboard() {
       </Container>
    );
 }
-
-const Container = styled.div`
-   flex-grow: 1;
-   display: flex;
-   flex-direction: row;
-   gap: 32px;
-   overflow-x: auto;
-   overflow-y: hidden;
-`;
-
-const TaskColumn = styled.section`
-   flex-shrink: 0;
-   display: flex;
-   flex-direction: column;
-   gap: 16px;
-   width: 348px;
-`;
-
-const TaskColumnHeader = styled.h2`
-   color: var(--color-neutral-1);
-`;
-
-const TaskList = styled.div`
-   flex: 1;
-   display: flex;
-   flex-direction: column;
-   gap: 16px;
-   overflow-y: auto;
-`;
 
 export { Dashboard };

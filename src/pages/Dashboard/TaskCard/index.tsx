@@ -5,6 +5,11 @@ import {
    RiChat3Line as CommentIcon,
    RiAlarmLine as TimerIcon,
 } from "react-icons/ri";
+import { GetTasksQuery } from "../../../graphql";
+import fakeAvatar from "../../../images/avatar.jpg";
+import { formatPointEstimate } from "../../../utils/pointEstimate";
+import { getTagBackgroundColor, getTagFontColor } from "../../../utils/tag";
+import { formatDueDate, getDueDateBackgroundColor, getDueDateFontColor } from "../../../utils/date";
 import {
    Avatar,
    AvatarContainer,
@@ -20,13 +25,20 @@ import {
    TagsContainer,
    TimerContainer,
 } from "./styles";
-import avatar from "../../../images/avatar.jpg";
+import { ArrayElement } from "../../../types";
 
-function TaskCard() {
+type Task = ArrayElement<GetTasksQuery["tasks"]>;
+
+interface Props {
+   task: Task;
+}
+function TaskCard(props: Props) {
+   const { task } = props;
+
    return (
       <Container>
          <Header>
-            <span className="font-body-lg-bold">TaskCard</span>
+            <span className="font-lg-bold">{task.name}</span>
             <IconButton>
                <OptionsIcon size={24} />
             </IconButton>
@@ -34,16 +46,23 @@ function TaskCard() {
 
          <Content className="font-md-bold">
             <TimerContainer>
-               <span>0 Points</span>
-               <Tag color={"var(--color-neutral-1)"} backgroundColor={"#94979a19"}>
+               <span>{formatPointEstimate(task.pointEstimate)}</span>
+               <Tag
+                  color={getDueDateFontColor(task.dueDate)}
+                  backgroundColor={getDueDateBackgroundColor(task.dueDate)}
+               >
                   <TimerIcon size={24} />
-                  <span>TODAY</span>
+                  <span>{formatDueDate(task.dueDate)}</span>
                </Tag>
             </TimerContainer>
             <TagsContainer>
-               {[...Array(2)].map((tag, index) => (
-                  <Tag key={index} color={"var(--color-primary-4)"} backgroundColor={"#da584b19"}>
-                     Label {index + 1}
+               {task.tags.map((tag, index) => (
+                  <Tag
+                     key={index}
+                     color={getTagFontColor(tag)}
+                     backgroundColor={getTagBackgroundColor(tag)}
+                  >
+                     {tag}
                   </Tag>
                ))}
             </TagsContainer>
@@ -51,10 +70,10 @@ function TaskCard() {
 
          <Footer>
             <AvatarContainer>
-               <Avatar src={avatar} />
+               <Avatar src={task.assignee?.avatar || fakeAvatar} />
             </AvatarContainer>
 
-            <ReactionsContainer>
+            <ReactionsContainer className="font-md-regular">
                <ReactionButton>
                   <AttachmentIcon />
                </ReactionButton>

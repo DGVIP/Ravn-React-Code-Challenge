@@ -1,0 +1,14 @@
+query GetTasks {
+   tasks(input: {}) {
+      id
+      name
+      status
+      position
+      tags
+      assignee {
+         avatar
+      }
+      dueDate
+      pointEstimate
+   }
+}
