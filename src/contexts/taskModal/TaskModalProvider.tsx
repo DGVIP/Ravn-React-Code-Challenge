@@ -41,6 +41,7 @@ function reducer(state: State, action: Action) {
          return {
             ...state,
             isModalOpen: false,
+            task: null,
          };
       default:
          return state;

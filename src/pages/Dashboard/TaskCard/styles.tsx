@@ -14,6 +14,7 @@ export const Header = styled.header`
    flex-direction: row;
    align-items: center;
    justify-content: space-between;
+   position: relative;
 `;
 
 export const Content = styled.div`

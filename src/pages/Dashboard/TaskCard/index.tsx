@@ -5,9 +5,14 @@ import {
    RiChat3Line as CommentIcon,
    RiAlarmLine as TimerIcon,
 } from "react-icons/ri";
+import OptionsMenu from "./OptionsMenu";
+import { useRef, useState } from "react";
+import { ArrayElement } from "../../../types";
+import { ConfirmModal } from "../ConfirmModal";
 import { GetTasksQuery } from "../../../graphql";
 import fakeAvatar from "../../../images/avatar.jpg";
 import { formatPointEstimate } from "../../../utils/pointEstimate";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { getTagBackgroundColor, getTagFontColor } from "../../../utils/tag";
 import { formatDueDate, getDueDateBackgroundColor, getDueDateFontColor } from "../../../utils/date";
 import {
@@ -25,7 +30,7 @@ import {
    TagsContainer,
    TimerContainer,
 } from "./styles";
-import { ArrayElement } from "../../../types";
+import { AnimatePresence } from "framer-motion";
 
 type Task = ArrayElement<GetTasksQuery["tasks"]>;
 
@@ -35,13 +40,36 @@ interface Props {
 function TaskCard(props: Props) {
    const { task } = props;
 
+   const optionsMenuRef = useRef<HTMLDivElement>(null);
+   const [isOpenOptionsMenu, setIsOpenOptionsMenu] = useState(false);
+   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+
+   const toggleOptionsMenu = () => {
+      setIsOpenOptionsMenu((prev) => !prev);
+   };
+
+   useOnClickOutside(optionsMenuRef, () => {
+      setIsOpenOptionsMenu(false);
+   });
+
    return (
       <Container>
          <Header>
             <span className="font-lg-bold">{task.name}</span>
-            <IconButton>
-               <OptionsIcon size={24} />
-            </IconButton>
+            <div ref={optionsMenuRef}>
+               <IconButton onClick={toggleOptionsMenu}>
+                  <OptionsIcon size={24} />
+               </IconButton>
+               {isOpenOptionsMenu && (
+                  <OptionsMenu
+                     task={task}
+                     openConfirmModal={() => setIsOpenConfirmModal(true)}
+                     closeOptionsMenu={() => {
+                        setIsOpenOptionsMenu(false);
+                     }}
+                  />
+               )}
+            </div>
          </Header>
 
          <Content className="font-md-bold">
@@ -87,6 +115,17 @@ function TaskCard(props: Props) {
                </ReactionButton>
             </ReactionsContainer>
          </Footer>
+
+         <AnimatePresence>
+            {isOpenConfirmModal && (
+               <ConfirmModal
+                  taskId={task.id}
+                  handleCloseModal={() => {
+                     setIsOpenConfirmModal(false);
+                  }}
+               />
+            )}
+         </AnimatePresence>
       </Container>
    );
 }

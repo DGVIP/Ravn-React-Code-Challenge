@@ -43,7 +43,7 @@ import { formatDate } from "../../utils/date";
 import { toast } from "react-toastify";
 
 function TaskModal() {
-   const container = document.getElementById("task-modal") as HTMLDivElement;
+   const container = document.getElementById("modal") as HTMLDivElement;
    return createPortal(<Modal />, container);
 }
 
