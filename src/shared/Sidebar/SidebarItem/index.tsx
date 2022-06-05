@@ -1,5 +1,6 @@
 import { IconType } from "react-icons";
 import { To } from "react-router-dom";
+import { Text } from "../../common/Text";
 import { Container, Indicator } from "./styles";
 
 interface Props {
@@ -16,7 +17,9 @@ function SidebarItem(props: Props) {
          {({ isActive }) => (
             <>
                <Icon size={24} />
-               <span>{label}</span>
+               <Text size="md" weight="bold" variant="body">
+                  {label}
+               </Text>
                {isActive && <Indicator layoutId="sb-tab-ind" />}
             </>
          )}

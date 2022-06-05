@@ -5,11 +5,11 @@ export const Container = styled.aside`
    border-radius: 24px;
    padding-top: 16px;
    padding-bottom: 16px;
-   background-color: var(--color-neutral-4);
-   display: flex;
-   flex-direction: column;
    gap: 48px;
    flex-shrink: 0;
+   display: flex;
+   flex-direction: column;
+   background-color: ${(props) => props.theme.palette.neutral[4]};
 `;
 
 export const Logo = styled.img`

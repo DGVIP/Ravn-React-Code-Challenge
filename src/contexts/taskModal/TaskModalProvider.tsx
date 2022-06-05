@@ -1,22 +1,19 @@
 import { ReactNode, useReducer } from "react";
-import { GetTasksQuery } from "../../graphql";
-import { ArrayElement } from "../../types";
+import { TaskItem } from "../../utils/tasks";
 import { TaskModalContext } from "./TaskModalContext";
-
-type Task = ArrayElement<GetTasksQuery["tasks"]>;
 
 interface Props {
    children: ReactNode;
 }
 
 interface State {
-   task: Task | null;
+   task: TaskItem | null;
    isModalOpen: boolean;
 }
 
 type Action =
    | { type: "OPEN_CREATE_MODAL" }
-   | { type: "OPEN_UPDATE_MODAL"; payload: Task }
+   | { type: "OPEN_UPDATE_MODAL"; payload: TaskItem }
    | { type: "CLOSE_MODAL" };
 
 const initialState = {
@@ -57,7 +54,7 @@ function TaskModalProvider(props: Props) {
       dispatch({ type: "OPEN_CREATE_MODAL" });
    };
 
-   const openUpdateModal = (task: Task) => {
+   const openUpdateModal = (task: TaskItem) => {
       dispatch({ type: "OPEN_UPDATE_MODAL", payload: task });
    };
 

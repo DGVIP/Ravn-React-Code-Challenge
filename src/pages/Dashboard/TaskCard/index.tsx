@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import {
    RiMoreFill as OptionsIcon,
    RiAttachment2 as AttachmentIcon,
@@ -5,38 +6,33 @@ import {
    RiChat3Line as CommentIcon,
    RiAlarmLine as TimerIcon,
 } from "react-icons/ri";
-import OptionsMenu from "./OptionsMenu";
+import { Text } from "../../../shared/common/Text";
+import { Avatar } from "../../../shared/common/Avatar";
+import { OptionsMenu } from "./OptionsMenu";
 import { useRef, useState } from "react";
-import { ArrayElement } from "../../../types";
 import { ConfirmModal } from "../ConfirmModal";
-import { GetTasksQuery } from "../../../graphql";
-import fakeAvatar from "../../../images/avatar.jpg";
-import { formatPointEstimate } from "../../../utils/pointEstimate";
+import { TaskItem } from "../../../utils/tasks";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
+import { formatPointEstimate } from "../../../utils/pointEstimate";
 import { getTagBackgroundColor, getTagFontColor } from "../../../utils/tag";
 import { formatDueDate, getDueDateBackgroundColor, getDueDateFontColor } from "../../../utils/date";
 import {
-   Avatar,
-   AvatarContainer,
    Container,
    Content,
    Footer,
    Header,
    IconButton,
    ReactionButton,
-   ReactionLabel,
    ReactionsContainer,
    Tag,
    TagsContainer,
    TimerContainer,
 } from "./styles";
-import { AnimatePresence } from "framer-motion";
-
-type Task = ArrayElement<GetTasksQuery["tasks"]>;
 
 interface Props {
-   task: Task;
+   task: TaskItem;
 }
+
 function TaskCard(props: Props) {
    const { task } = props;
 
@@ -55,7 +51,9 @@ function TaskCard(props: Props) {
    return (
       <Container>
          <Header>
-            <span className="font-lg-bold">{task.name}</span>
+            <Text size="lg" weight="bold" variant="body">
+               {task.name}
+            </Text>
             <div ref={optionsMenuRef}>
                <IconButton onClick={toggleOptionsMenu}>
                   <OptionsIcon size={24} />
@@ -72,15 +70,19 @@ function TaskCard(props: Props) {
             </div>
          </Header>
 
-         <Content className="font-md-bold">
+         <Content>
             <TimerContainer>
-               <span>{formatPointEstimate(task.pointEstimate)}</span>
+               <Text size="md" weight="bold" variant="body">
+                  {formatPointEstimate(task.pointEstimate)}
+               </Text>
                <Tag
                   color={getDueDateFontColor(task.dueDate)}
                   backgroundColor={getDueDateBackgroundColor(task.dueDate)}
                >
                   <TimerIcon size={24} />
-                  <span>{formatDueDate(task.dueDate)}</span>
+                  <Text size="md" weight="bold" variant="body">
+                     {formatDueDate(task.dueDate)}
+                  </Text>
                </Tag>
             </TimerContainer>
             <TagsContainer>
@@ -97,20 +99,22 @@ function TaskCard(props: Props) {
          </Content>
 
          <Footer>
-            <AvatarContainer>
-               <Avatar src={task.assignee?.avatar || fakeAvatar} />
-            </AvatarContainer>
+            <Avatar size={32} src={task.assignee?.avatar} />
 
-            <ReactionsContainer className="font-md-regular">
+            <ReactionsContainer>
                <ReactionButton>
                   <AttachmentIcon />
                </ReactionButton>
                <ReactionButton>
-                  <ReactionLabel>3</ReactionLabel>
+                  <Text size="md" weight="regular" variant="body">
+                     3
+                  </Text>
                   <BranchIcon />
                </ReactionButton>
                <ReactionButton>
-                  <ReactionLabel>5</ReactionLabel>
+                  <Text size="md" weight="regular" variant="body">
+                     5
+                  </Text>
                   <CommentIcon />
                </ReactionButton>
             </ReactionsContainer>

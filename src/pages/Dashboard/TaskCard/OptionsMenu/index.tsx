@@ -1,16 +1,15 @@
 import styled from "styled-components";
-import { RiPencilLine as EditIcon, RiDeleteBin6Line as DeleteIcon } from "react-icons/ri";
-import { ArrayElement } from "../../../../types";
-import { GetTasksQuery } from "../../../../graphql";
+import { TaskItem } from "../../../../utils/tasks";
 import { useTaskModal } from "../../../../contexts/taskModal/TaskModalContext";
-
-type Task = ArrayElement<GetTasksQuery["tasks"]>;
+import { RiPencilLine as EditIcon, RiDeleteBin6Line as DeleteIcon } from "react-icons/ri";
+import { Text } from "../../../../shared/common/Text";
 
 interface Props {
-   task: Task;
+   task: TaskItem;
    closeOptionsMenu: () => void;
    openConfirmModal: () => void;
 }
+
 function OptionsMenu(props: Props) {
    const { task, closeOptionsMenu, openConfirmModal } = props;
 
@@ -30,11 +29,15 @@ function OptionsMenu(props: Props) {
       <Container>
          <OptionItem onClick={handleOpenUpdateModal}>
             <EditIcon size={24} />
-            <span className="font-md-regular">Edit</span>
+            <Text size="md" weight="regular" variant="body">
+               Edit
+            </Text>
          </OptionItem>
          <OptionItem onClick={handleOpenConfirmModal}>
             <DeleteIcon size={24} />
-            <span className="font-md-regular">Delete</span>
+            <Text size="md" weight="regular" variant="body">
+               Delete
+            </Text>
          </OptionItem>
       </Container>
    );
@@ -45,29 +48,29 @@ const Container = styled.div`
    top: 100%;
    padding: 8px 0;
    position: absolute;
-   border: 1px solid var(--color-neutral-2);
    display: flex;
    flex-direction: column;
    gap: 8px;
-   background-color: var(--color-neutral-3);
    border-radius: 8px;
+   border: 1px solid ${(props) => props.theme.palette.neutral[2]};
+   background-color: ${(props) => props.theme.palette.neutral[3]};
 `;
 
 const OptionItem = styled.button`
    border: none;
    cursor: pointer;
-   color: var(--color-neutral-1);
-   background-color: transparent;
    gap: 8px;
+   width: 122px;
    display: flex;
+   padding: 4px 24px;
    flex-direction: row;
    align-items: center;
-   padding: 4px 24px;
-   width: 122px;
+   background-color: transparent;
+   color: ${(props) => props.theme.palette.neutral[1]};
 
    &:hover {
       background-color: rgba(255, 255, 255, 0.25);
    }
 `;
 
-export default OptionsMenu;
+export { OptionsMenu };

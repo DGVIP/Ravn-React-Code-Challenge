@@ -2,5 +2,10 @@ query GetProfile {
    profile {
       id
       avatar
+      fullName
+      email
+      type
+      createdAt
+      updatedAt
    }
 }

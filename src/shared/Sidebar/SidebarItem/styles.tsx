@@ -9,23 +9,23 @@ export const Container = styled(NavLink)`
    align-items: center;
    gap: 20px;
    padding: 16px 20px;
-   text-decoration: none;
-   color: var(--color-neutral-2);
-   background-color: transparent;
    transition: 0.3s;
+   text-decoration: none;
+   background-color: transparent;
+   color: ${(props) => props.theme.palette.neutral[2]};
 
    &:hover {
-      color: var(--color-primary-4);
+      color: ${(props) => props.theme.palette.primary[4]};
    }
 
    &.active {
-      color: var(--color-primary-4);
+      color: ${(props) => props.theme.palette.primary[4]};
    }
 `;
 
 export const Indicator = styled(motion.div)`
    inset: 0;
    position: absolute;
-   border-right: 4px solid var(--color-primary-4);
+   border-right: 4px solid ${(props) => props.theme.palette.primary[4]};
    background-image: linear-gradient(to right, #ba252500 0%, #d24d4d19 100%);
 `;

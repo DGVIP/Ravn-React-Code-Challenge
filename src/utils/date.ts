@@ -1,7 +1,9 @@
+import { theme } from "../configs/theme";
+
 const dueDateFontColor = {
-   due: "var(--color-neutral-1)",
-   almost: "var(--color-tertiary-4)",
-   overdue: "var(--color-primary-4)",
+   due: theme.palette.neutral[1],
+   almost: theme.palette.tertiary[4],
+   overdue: theme.palette.primary[4],
 };
 
 const dueDateBackgroundColor = {

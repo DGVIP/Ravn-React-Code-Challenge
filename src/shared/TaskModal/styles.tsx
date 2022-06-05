@@ -14,24 +14,28 @@ export const FormContainer = styled(motion.form)`
    width: 572px;
    padding: 16px;
    border-radius: 8px;
-   background-color: var(--color-neutral-3);
    display: flex;
    flex-direction: column;
    gap: 24px;
+   background-color: ${(props) => props.theme.palette.neutral[3]};
 `;
 
 export const TitleInput = styled.input`
    border: none;
+   font-weight: bold;
    font-family: inherit;
-   color: var(--color-neutral-1);
    background-color: transparent;
+   color: ${(props) => props.theme.palette.neutral[1]};
+   font-size: ${(props) => props.theme.typography.desktop.body.xl.fontSize}px;
+   line-height: ${(props) => props.theme.typography.desktop.body.xl.lineHeight}px;
+   letter-spacing: ${(props) => props.theme.typography.desktop.body.xl.letterSpacing}px;
 
    &:focus {
       outline: none;
    }
 
    &::placeholder {
-      color: var(--color-neutral-2);
+      color: ${(props) => props.theme.palette.neutral[2]};
    }
 `;
 
@@ -58,17 +62,17 @@ export const TagButton = styled.button.attrs({
    align-items: center;
    justify-content: center;
    gap: 10px;
-   color: var(--color-neutral-1);
    background-color: #94979a19;
    white-space: nowrap;
    max-width: 130px;
+   color: ${(props) => props.theme.palette.neutral[1]};
 `;
+
 export const Button = css`
-   cursor: pointer;
    border: none;
-   color: var(--color-neutral-1);
    padding: 8px;
    border-radius: 8px;
+   color: ${(props) => props.theme.palette.neutral[1]};
 `;
 
 export const ActionsContainer = styled.div`
@@ -80,15 +84,15 @@ export const ActionsContainer = styled.div`
 export const CancelButton = styled.button`
    ${Button}
    background-color: transparent;
+
+   &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+   }
 `;
 
-interface CreateButtonProps {
-   backgroundColor: string;
-}
-
-export const CreateButton = styled.button<CreateButtonProps>`
+export const CreateButton = styled.button`
    ${Button}
-   background-color: ${(props) => props.backgroundColor};
+   background-color:  ${(props) => props.theme.palette.primary[4]};
 `;
 
 interface DropdownProps {
@@ -102,9 +106,9 @@ export const Dropdown = styled.div<DropdownProps>`
    top: calc(100% + 8px);
    left: 50%;
    transform: translateX(-50%);
-   border: 1px solid var(--color-neutral-2);
-   background-color: var(--color-neutral-3);
    display: ${(props) => (props.isOpen ? "block" : "none")};
+   border: 1px solid ${(props) => props.theme.palette.neutral[2]};
+   background-color: ${(props) => props.theme.palette.neutral[3]};
 `;
 
 interface MenuProps {
@@ -119,14 +123,14 @@ export const Menu = styled.div<MenuProps>`
    border-radius: 8px;
    top: calc(100% + 8px);
    transform: translateX(-50%);
-   background-color: var(--color-neutral-3);
-   border: 1px solid var(--color-neutral-2);
    display: ${(props) => (props.isOpen ? "block" : "none")};
+   border: 1px solid ${(props) => props.theme.palette.neutral[2]};
+   background-color: ${(props) => props.theme.palette.neutral[3]};
 `;
 
 export const MenuTitle = styled.span`
    padding: 4px 16px;
-   color: var(--color-neutral-2);
+   color: ${(props) => props.theme.palette.neutral[2]};
 `;
 
 export const Checkbox = styled.input.attrs({ type: "checkbox" })`
@@ -134,7 +138,7 @@ export const Checkbox = styled.input.attrs({ type: "checkbox" })`
    height: 18px;
    border-radius: 0;
    cursor: pointer;
-   border: 3px solid var(--color-neutral-1);
+   border: 3px solid ${(props) => props.theme.palette.neutral[1]};
 `;
 
 export const MenuOption = styled.button.attrs({ type: "button" })`
@@ -145,7 +149,7 @@ export const MenuOption = styled.button.attrs({ type: "button" })`
    flex-direction: row;
    align-items: center;
    white-space: nowrap;
-   color: var(--color-neutral-1);
+   color: ${(props) => props.theme.palette.neutral[1]};
 
    &:hover {
       background-color: rgba(255, 255, 255, 0.25);

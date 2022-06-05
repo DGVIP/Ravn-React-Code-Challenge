@@ -1,11 +1,12 @@
+import { theme } from "../configs/theme";
 import { TaskTag } from "../graphql";
 
 const tagFontColors = {
-   [TaskTag.Ios]: "var(--color-secondary-4)",
+   [TaskTag.Ios]: theme.palette.secondary[4],
    [TaskTag.React]: "#2f61bf",
-   [TaskTag.Rails]: "var(--color-primary-4)",
-   [TaskTag.NodeJs]: "var(--color-neutral-1)",
-   [TaskTag.Android]: "var(--color-tertiary-4)",
+   [TaskTag.Rails]: theme.palette.primary[4],
+   [TaskTag.NodeJs]: theme.palette.neutral[1],
+   [TaskTag.Android]: theme.palette.tertiary[4],
 };
 
 const tagBackgroundColors = {

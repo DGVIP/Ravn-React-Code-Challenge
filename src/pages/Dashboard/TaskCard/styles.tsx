@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const Container = styled.article`
    padding: 16px;
    border-radius: 8px;
-   background-color: var(--color-neutral-4);
    display: flex;
    gap: 16px;
    flex-direction: column;
+   background-color: ${(props) => props.theme.palette.neutral[4]};
 `;
 
 export const Header = styled.header`
@@ -53,12 +53,12 @@ export const IconButton = styled.button`
    display: flex;
    align-items: center;
    justify-content: center;
-   color: var(--color-neutral-2);
+   color: ${(props) => props.theme.palette.neutral[2]};
 `;
 
 export const Title = styled.h3`
    font-size: 18px;
-   color: var(--color-neutral-1);
+   color: ${(props) => props.theme.palette.neutral[1]};
 `;
 
 export const TimerContainer = styled.div`
@@ -77,15 +77,12 @@ export const ReactionsContainer = styled.div`
 export const ReactionButton = styled.button`
    border: none;
    cursor: pointer;
-   color: var(--color-neutral-1);
    background-color: transparent;
    display: flex;
    align-items: center;
    justify-content: center;
    gap: 4px;
-`;
-export const ReactionLabel = styled.span`
-   font-size: 15px;
+   color: ${(props) => props.theme.palette.neutral[1]};
 `;
 
 export const TagsContainer = styled.div`
@@ -101,13 +98,14 @@ interface TagProps {
 }
 
 export const Tag = styled.span<TagProps>`
+   height: 32px;
    padding: 4px 16px;
    border-radius: 4px;
    color: ${(props) => props.color};
    background-color: ${(props) => props.backgroundColor};
 
-   display: flex;
    gap: 8px;
+   display: flex;
    flex-direction: row;
    align-items: center;
 `;

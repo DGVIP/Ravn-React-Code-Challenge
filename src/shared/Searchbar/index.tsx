@@ -5,7 +5,7 @@ import {
    RiNotification3Line as NotificationIcon,
    RiCloseCircleLine as CloseIcon,
 } from "react-icons/ri";
-import Avatar from "../common/Avatar";
+import { Avatar } from "../common/Avatar";
 import { useAuth } from "../../contexts/auth/AuthContext";
 import { Container, IconButton, Input } from "./styles";
 
@@ -24,13 +24,7 @@ function Searchbar() {
    return (
       <Container>
          <SearchIcon size={24} style={{ minWidth: "24px" }} />
-         <Input
-            type="text"
-            placeholder="Search"
-            className="font-md-regular"
-            value={query}
-            onChange={handleInputChange}
-         />
+         <Input placeholder="Search" value={query} onChange={handleInputChange} />
          {!!query.length && (
             <IconButton onClick={handleInputClear}>
                <CloseIcon size={24} />

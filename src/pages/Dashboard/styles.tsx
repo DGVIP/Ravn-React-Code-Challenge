@@ -17,10 +17,6 @@ export const TaskColumn = styled.section`
    width: 348px;
 `;
 
-export const TaskColumnHeader = styled.h2`
-   color: var(--color-neutral-1);
-`;
-
 export const TaskList = styled.div`
    flex: 1;
    display: flex;

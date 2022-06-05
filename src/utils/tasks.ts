@@ -1,6 +1,8 @@
 import { GetTasksQuery, Status } from "../graphql";
+import { ArrayItem } from "../types";
 
 export type TaskList = Record<Status, GetTasksQuery["tasks"]>;
+export type TaskItem = ArrayItem<GetTasksQuery["tasks"]>;
 
 export function formatTasks(tasks: GetTasksQuery["tasks"]): TaskList {
    const newTaskList: TaskList = {

@@ -20,4 +20,4 @@ export const Image = styled.img`
    height: ${(props) => props.height}px;
 `;
 
-export default Avatar;
+export { Avatar };

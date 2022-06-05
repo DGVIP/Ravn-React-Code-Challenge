@@ -1,6 +1,6 @@
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { motion } from "framer-motion";
 
 export const Container = styled.div`
    padding-top: 4px;
@@ -27,7 +27,7 @@ export const Button = css`
    border-radius: 8px;
    border-width: 1px;
    border-style: solid;
-   color: var(--color-neutral-1);
+   color: ${(props) => props.theme.palette.neutral[1]};
 `;
 
 export const SwitchButton = styled(NavLink)`
@@ -36,19 +36,19 @@ export const SwitchButton = styled(NavLink)`
    border-color: transparent;
 
    &.active {
-      color: var(--color-primary-4);
+      color: ${(props) => props.theme.palette.primary[4]};
    }
 `;
 
 export const IconButton = styled.button`
    ${Button}
-   border-color: var(--color-primary-4);
-   background-color: var(--color-primary-4);
+   border-color: ${(props) => props.theme.palette.primary[4]};
+   background-color: ${(props) => props.theme.palette.primary[4]};
 `;
 
 export const Indicator = styled(motion.div)`
    inset: -1px;
    position: absolute;
    border-radius: 8px;
-   border: 1px solid var(--color-primary-4);
+   border: 1px solid ${(props) => props.theme.palette.primary[4]};
 `;

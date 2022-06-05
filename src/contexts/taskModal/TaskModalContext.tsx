@@ -1,14 +1,11 @@
 import { createContext, useContext } from "react";
-import { GetTasksQuery } from "../../graphql";
-import { ArrayElement } from "../../types";
-
-type Task = ArrayElement<GetTasksQuery["tasks"]>;
+import { TaskItem } from "../../utils/tasks";
 
 interface TaskModalContextValue {
-   task: Task | null;
+   task: TaskItem | null;
    isModalOpen: boolean;
    openCreateModal: () => void;
-   openUpdateModal: (task: Task) => void;
+   openUpdateModal: (task: TaskItem) => void;
    closeModal: () => void;
 }
 

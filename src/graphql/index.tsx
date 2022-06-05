@@ -189,7 +189,16 @@ export type GetProfileQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetProfileQuery = {
    __typename?: "Query";
-   profile: { __typename?: "User"; id: string; avatar?: string | null };
+   profile: {
+      __typename?: "User";
+      id: string;
+      avatar?: string | null;
+      fullName: string;
+      email: string;
+      type: UserType;
+      createdAt: string;
+      updatedAt: string;
+   };
 };
 
 export type GetTasksQueryVariables = Exact<{ [key: string]: never }>;
@@ -371,6 +380,11 @@ export const GetProfileDocument = gql`
       profile {
          id
          avatar
+         fullName
+         email
+         type
+         createdAt
+         updatedAt
       }
    }
 `;

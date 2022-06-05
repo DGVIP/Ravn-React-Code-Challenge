@@ -4,7 +4,7 @@ const apolloClient = new ApolloClient({
    uri: import.meta.env.VITE_API_URL,
    cache: new InMemoryCache(),
    headers: {
-      Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
    },
 });
 

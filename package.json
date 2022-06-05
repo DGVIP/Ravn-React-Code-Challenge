@@ -11,7 +11,7 @@
       "graphql:codegen": "graphql-codegen",
       "lint": "eslint **/*.{ts,tsx}",
       "lint:fix": "eslint --fix **/*.{ts,tsx}",
-      "format": "prettier --write **/*.{ts,tsx,css,html,md,json}"
+      "format": "prettier --write **/*.{ts,tsx,css,html,md,json,yml,graphql}"
    },
    "dependencies": {
       "@apollo/client": "^3.6.6",

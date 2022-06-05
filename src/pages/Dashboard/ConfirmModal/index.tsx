@@ -1,7 +1,8 @@
 import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
 import { GetTasksDocument, GetTasksQuery, useDeleteTaskMutation } from "../../../graphql";
-import { ActionsContainer, Backdrop, CancelButton, Container, DeleteButton, Title } from "./styles";
+import { Text } from "../../../shared/common/Text";
+import { ActionsContainer, Backdrop, CancelButton, Container, DeleteButton } from "./styles";
 
 interface Props {
    taskId: string;
@@ -16,13 +17,16 @@ function ConfirmModal(props: Props) {
 function Modal(props: Props) {
    const { taskId, handleCloseModal } = props;
    const [deleteTask] = useDeleteTaskMutation({
-      update: (cache, query) => {
+      update: (cache, result) => {
          const data = cache.readQuery<GetTasksQuery>({ query: GetTasksDocument });
-         const tasks = data?.tasks || [];
-         cache.writeQuery({
-            query: GetTasksDocument,
-            data: { tasks: tasks.filter((task) => task.id !== query?.data?.deleteTask?.id) },
-         });
+         const tasks = data?.tasks;
+         const deletedTaskId = result.data?.deleteTask.id;
+         if (tasks && deletedTaskId) {
+            cache.writeQuery<GetTasksQuery>({
+               query: GetTasksDocument,
+               data: { tasks: tasks.filter((task) => task.id !== deletedTaskId) },
+            });
+         }
       },
    });
 
@@ -55,14 +59,22 @@ function Modal(props: Props) {
             exit={{ y: "100vh", opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
          >
-            <Title className="font-lg-bold">Are you sure?</Title>
-            <span className="font-md-regular">This action can not be undone.</span>
+            <Text size="xl" weight="bold" variant="body">
+               Are you sure?
+            </Text>
+            <Text size="md" weight="regular" variant="body">
+               This action can not be undone.
+            </Text>
             <ActionsContainer>
                <CancelButton className="font-md-regular" onClick={handleCloseModal}>
-                  Cancel
+                  <Text size="md" variant="body" weight="regular">
+                     Cancel
+                  </Text>
                </CancelButton>
                <DeleteButton className="font-md-regular" onClick={handleDeleteTask}>
-                  Delete
+                  <Text size="md" variant="body" weight="regular">
+                     Delete
+                  </Text>
                </DeleteButton>
             </ActionsContainer>
          </Container>

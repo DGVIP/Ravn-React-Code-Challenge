@@ -36,12 +36,12 @@ const Button = styled.button`
    cursor: pointer;
    padding: 8px 16px;
    border-radius: 8px;
-   color: var(--color-neutral-1);
-   background-color: var(--color-primary-4);
    display: flex;
    flex-direction: row;
    gap: 8px;
    align-items: center;
+   color: ${(props) => props.theme.palette.neutral[1]};
+   background-color: ${(props) => props.theme.palette.primary[4]};
 `;
 
 export { TasksError };

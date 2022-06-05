@@ -1,10 +1,16 @@
 import * as yup from "yup";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { createPortal } from "react-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { createPortal } from "react-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Text } from "../common/Text";
+import { Avatar } from "../common/Avatar";
+import { formatDate } from "../../utils/date";
 import { Controller, useForm } from "react-hook-form";
 import { useTaskModal } from "../../contexts/taskModal/TaskModalContext";
+import { formatPointEstimate } from "../../utils/pointEstimate";
 import {
    RiUser3Fill as UserIcon,
    RiPriceTag3Fill as TagIcon,
@@ -36,11 +42,6 @@ import {
    MenuOption,
    Checkbox,
 } from "./styles";
-import { formatPointEstimate } from "../../utils/pointEstimate";
-import { useState } from "react";
-import Avatar from "../common/Avatar";
-import { formatDate } from "../../utils/date";
-import { toast } from "react-toastify";
 
 function TaskModal() {
    const container = document.getElementById("modal") as HTMLDivElement;
@@ -83,19 +84,26 @@ function Modal() {
    const { task, closeModal } = useTaskModal();
    const [openMenu, setOpenMenu] = useState("");
 
+   const { data: usersData } = useGetUsersQuery();
+   const [updateTask] = useUpdateTaskMutation();
    const [createTask] = useCreateTaskMutation({
-      update: (cache, query) => {
-         const data = cache.readQuery<GetTasksQuery>({ query: GetTasksDocument });
-         const tasks = data?.tasks || [];
-         cache.writeQuery({
+      update: (cache, result) => {
+         const data = cache.readQuery<GetTasksQuery>({
             query: GetTasksDocument,
-            data: { tasks: [...tasks, query.data?.createTask] },
          });
+         const tasks = data?.tasks;
+         const newTask = result.data?.createTask;
+         if (tasks && newTask) {
+            cache.writeQuery<GetTasksQuery>({
+               query: GetTasksDocument,
+               data: {
+                  tasks: [...tasks, newTask],
+               },
+            });
+         }
       },
    });
 
-   const [updateTask] = useUpdateTaskMutation();
-   const { data: usersData } = useGetUsersQuery();
    const { control, register, handleSubmit, watch, setValue } = useForm<FormData>({
       resolver: yupResolver(schema),
       defaultValues: {
@@ -178,21 +186,16 @@ function Modal() {
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit(task ? handleUpdateTask : handleCreateTask, handleFormErrors)}
          >
-            <TitleInput
-               placeholder="Task Title"
-               defaultValue={task?.name}
-               className="font-xl-bold"
-               {...register("name")}
-            />
+            <TitleInput placeholder="Task Title" defaultValue={task?.name} {...register("name")} />
             <TagsContainer>
                <TagButtonContainer>
                   <TagButton onClick={handleOpenMenu("estimate")}>
                      <EstimateIcon size={24} />
-                     <span className="font-md-bold">
+                     <Text size="md" variant="body" weight="regular">
                         {watch("pointEstimate")
                            ? formatPointEstimate(watch("pointEstimate") as PointEstimate)
                            : "Estimate"}
-                     </span>
+                     </Text>
                   </TagButton>
                   <Menu isOpen={openMenu === "estimate"}>
                      <MenuTitle>Estimate</MenuTitle>
@@ -220,15 +223,17 @@ function Modal() {
                      ) : (
                         <UserIcon size={24} />
                      )}
-                     <span
-                        className="font-md-bold"
+                     <Text
+                        size="md"
+                        variant="body"
+                        weight="regular"
                         style={{ overflow: "hidden", textOverflow: "ellipsis" }}
                      >
                         {watch("assigneeId")
                            ? usersData?.users.find((user) => user.id === watch("assigneeId"))
                                 ?.fullName
                            : "Assignee"}
-                     </span>
+                     </Text>
                   </TagButton>
                   <Menu isOpen={openMenu === "assignee"}>
                      <MenuTitle>Assign to...</MenuTitle>
@@ -243,12 +248,14 @@ function Modal() {
                <TagButtonContainer>
                   <TagButton onClick={handleOpenMenu("tag")}>
                      <TagIcon size={24} />
-                     <span
-                        className="font-md-bold"
+                     <Text
+                        size="md"
+                        variant="body"
+                        weight="regular"
                         style={{ overflow: "hidden", textOverflow: "ellipsis" }}
                      >
                         Label {!!watch("tags")?.length && `(${watch("tags")?.length})`}
-                     </span>
+                     </Text>
                   </TagButton>
                   <Menu isOpen={openMenu === "tag"}>
                      <MenuTitle>Tag Title</MenuTitle>
@@ -275,12 +282,14 @@ function Modal() {
                            customInput={
                               <TagButton>
                                  <DateIcon size={24} />
-                                 <span
-                                    className="font-md-regular"
+                                 <Text
+                                    size="md"
+                                    variant="body"
+                                    weight="regular"
                                     style={{ overflow: "hidden", textOverflow: "ellipsis" }}
                                  >
                                     {watch("dueDate") ? formatDate(watch("dueDate")) : "Due Date"}
-                                 </span>
+                                 </Text>
                               </TagButton>
                            }
                         />
@@ -289,15 +298,15 @@ function Modal() {
                </TagButtonContainer>
             </TagsContainer>
             <ActionsContainer>
-               <CancelButton type="button" onClick={closeModal} className="font-md-regular">
-                  Cancel
+               <CancelButton type="button" onClick={closeModal}>
+                  <Text size="md" variant="body" weight="regular">
+                     Cancel
+                  </Text>
                </CancelButton>
-               <CreateButton
-                  type="submit"
-                  className="font-md-regular"
-                  backgroundColor={task ? "var(--color-primary-4)" : "var(--color-primary-3)"}
-               >
-                  {task ? "Update" : "Create"}
+               <CreateButton type="submit" className="font-md-regular">
+                  <Text size="md" variant="body" weight="regular">
+                     {task ? "Update" : "Create"}
+                  </Text>
                </CreateButton>
             </ActionsContainer>
          </FormContainer>
