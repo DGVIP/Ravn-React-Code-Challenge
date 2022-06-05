@@ -38,6 +38,13 @@ function Modal(props: Props) {
                   id: taskId,
                },
             },
+            optimisticResponse: {
+               __typename: "Mutation",
+               deleteTask: {
+                  __typename: "Task",
+                  id: taskId,
+               },
+            },
          });
          toast.success("Task deleted successfully");
          handleCloseModal();

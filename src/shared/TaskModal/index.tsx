@@ -2,6 +2,7 @@ import * as yup from "yup";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { createPortal } from "react-dom";
+import { v4 as uuidv4 } from "uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -124,9 +125,8 @@ function Modal() {
    };
 
    const handleCreateTask = async (formData: FormData) => {
-      console.log(formData);
       try {
-         const response = await createTask({
+         await createTask({
             variables: {
                input: {
                   name: formData.name,
@@ -137,8 +137,26 @@ function Modal() {
                   pointEstimate: formData.pointEstimate as PointEstimate,
                },
             },
+            optimisticResponse: {
+               __typename: "Mutation",
+               createTask: {
+                  __typename: "Task",
+                  id: uuidv4(),
+                  position: 9999,
+                  name: formData.name,
+                  status: Status.Backlog,
+                  dueDate: formData.dueDate,
+                  tags: formData.tags as TaskTag[],
+                  pointEstimate: formData.pointEstimate as PointEstimate,
+                  assignee: {
+                     __typename: "User",
+                     id: formData.assigneeId,
+                     avatar: usersData?.users.find((user) => user.id === formData.assigneeId)
+                        ?.avatar,
+                  },
+               },
+            },
          });
-         console.log(response);
          toast.success("Task Created");
          closeModal();
       } catch {
@@ -162,6 +180,23 @@ function Modal() {
                   assigneeId: formData.assigneeId,
                   tags: formData.tags as TaskTag[],
                   pointEstimate: formData.pointEstimate as PointEstimate,
+               },
+            },
+            optimisticResponse: {
+               __typename: "Mutation",
+               updateTask: {
+                  __typename: "Task",
+                  id: task.id,
+                  name: formData.name,
+                  dueDate: formData.dueDate,
+                  assignee: {
+                     __typename: "User",
+                     id: formData.assigneeId,
+                     avatar: usersData?.users.find((user) => user.id === formData.assigneeId)
+                        ?.avatar,
+                  },
+                  pointEstimate: formData.pointEstimate as PointEstimate,
+                  tags: formData.tags as TaskTag[],
                },
             },
          });
