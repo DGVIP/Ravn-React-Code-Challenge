@@ -32,18 +32,3 @@ export const IconButton = styled.button`
    justify-content: center;
    color: var(--color-neutral-2);
 `;
-
-export const AvatarContainer = styled.figure`
-   width: 40px;
-   height: 40px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-`;
-
-export const Avatar = styled.img`
-   width: 40px;
-   height: 40px;
-   border-radius: 50%;
-   object-fit: cover;
-`;

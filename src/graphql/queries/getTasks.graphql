@@ -2,13 +2,14 @@ query GetTasks {
    tasks(input: {}) {
       id
       name
-      status
-      position
       tags
+      status
+      dueDate
+      position
+      pointEstimate
       assignee {
+         id
          avatar
       }
-      dueDate
-      pointEstimate
    }
 }

@@ -1,9 +1,9 @@
 import { TaskCard } from "./TaskCard";
+import { formatTasks } from "../../utils/tasks";
 import { useGetTasksQuery } from "../../graphql";
 import { TasksError } from "../../shared/TasksLayout/TasksError";
 import { TasksLoading } from "../../shared/TasksLayout/TasksLoading";
 import { TasksEmpty } from "../../shared/TasksLayout/TasksEmpty/TasksEmpty";
-import { formatTasks, TaskList as ITaskList } from "../../utils/tasks";
 import { Container, TaskColumn, TaskColumnHeader, TaskList } from "./styles";
 
 function Dashboard() {
@@ -33,13 +33,13 @@ function Dashboard() {
 
    return (
       <Container>
-         {Object.keys(newData).map((status) => (
+         {(Object.keys(newData) as Array<keyof typeof newData>).map((status) => (
             <TaskColumn key={status}>
                <TaskColumnHeader className="font-lg-bold">
-                  {status} ({newData[status as keyof ITaskList].length})
+                  {status} ({newData[status].length})
                </TaskColumnHeader>
                <TaskList>
-                  {newData[status as keyof ITaskList].map((task) => (
+                  {newData[status].map((task) => (
                      <TaskCard key={task.id} task={task} />
                   ))}
                </TaskList>

@@ -12,6 +12,12 @@ const fontLg = css`
    letter-spacing: 0.75px;
 `;
 
+const fontXl = css`
+   font-size: 20px;
+   line-height: 32px;
+   letter-spacing: 0.75px;
+`;
+
 const GlobalStyle = createGlobalStyle`
 :root {
    --color-neutral-1: #ffffff;
@@ -36,6 +42,7 @@ const GlobalStyle = createGlobalStyle`
    --color-tertiary-4: #e5b454;
 }
 
+/* CSS Reset */
 *,
 *::before,
 *::after {
@@ -43,6 +50,25 @@ const GlobalStyle = createGlobalStyle`
    padding: 0;
    box-sizing: border-box;
 }
+
+button {
+   border: none;
+   cursor:pointer;
+   background-color: transparent;
+}
+
+input,
+button {
+   border: none;
+   font-family: inherit;
+   background-color: transparent;
+}
+
+a {
+   text-decoration: none;
+}
+
+/* Global */
 
 html {
    font-family: sans-serif;
@@ -57,15 +83,9 @@ body,
    background-color: var(--color-neutral-5);
 }
 
-.font-lg-bold {
-   ${fontLg}
-   font-weight: 600;
-
-}
-
-.font-md-bold {
+.font-md-regular {
    ${fontMd}
-   font-weight: 600;
+   font-weight: 400;
 }
 
 .font-lg-regular {
@@ -74,10 +94,93 @@ body,
 
 }
 
-.font-md-regular {
-   ${fontMd}
+.font-xl-regular {
+   ${fontXl}
    font-weight: 400;
+
 }
+
+.font-md-bold {
+   ${fontMd}
+   font-weight: 600;
+}
+
+.font-lg-bold {
+   ${fontLg}
+   font-weight: 600;
+
+}
+
+.font-xl-bold {
+   ${fontXl}
+   font-weight: 600;
+
+}
+
+/* Datepicker */
+
+.react-datepicker {
+   transform: translateX(-25%);
+   border-color: var(--color-neutral-2);
+}
+
+.react-datepicker__triangle {
+   display: none;
+}
+
+.react-datepicker__month-container {
+   border-radius: 4px;
+   background-color: var(--color-neutral-5);
+}
+
+.react-datepicker__header {
+   background-color: var(--color-neutral-5);
+   border-bottom-color: var(--color-neutral-2);
+}
+
+.react-datepicker__current-month {
+   color: var(--color-neutral-1);
+}
+
+.react-datepicker__day-names {
+   color: var(--color-neutral-1);
+}
+
+.react-datepicker__day-name {
+   color: var(--color-neutral-1);
+}
+
+.react-datepicker__day {
+   border-radius: 2px;
+   color: var(--color-neutral-1);
+   border: 1px solid transparent;
+   
+   &:hover {
+      border-radius: 2px;
+      background-color: transparent;
+      border: 1px solid var(--color-primary-4);
+   }
+
+}
+
+.react-datepicker__day--today {
+   background: rgba(255,255,255,0.05);
+}
+
+.react-datepicker__day--selected {
+   background-color: var(--color-primary-4);
+}
+
+
+.react-datepicker__day--outside-month {
+   color: var(--color-neutral-2);
+}
+
+.react-datepicker__day--keyboard-selected {
+   background-color: transparent;
+}
+
+/* Scrollbar */
 
 *::-webkit-scrollbar {
    width: 8px;

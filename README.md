@@ -28,6 +28,8 @@ Once the repository is cloned, to install the dependencies, run the following co
 $ yarn install
 ```
 
+Create a new .env file and add the variables specified in the .env.example file or set the environment variables manually.
+
 Then, you can run the following command to start the development server:
 
 ```bash

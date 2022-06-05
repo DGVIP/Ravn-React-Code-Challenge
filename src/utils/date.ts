@@ -52,7 +52,7 @@ export function getDueDateFontColor(dueDate: string): string {
    const timeLeft = getDateDiff(dueDate);
 
    if (timeLeft < timeLimit) {
-      return dueDateFontColor.due;
+      return dueDateFontColor.overdue;
    } else if (timeLeft < 2) {
       return dueDateFontColor.almost;
    } else {

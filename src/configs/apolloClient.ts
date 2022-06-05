@@ -1,24 +1,11 @@
-import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-
-const httpLink = createHttpLink({
-   uri: import.meta.env.VITE_API_URL,
-});
-
-const authLink = setContext((_, { headers }) => {
-   const token = import.meta.env.VITE_API_TOKEN;
-
-   return {
-      headers: {
-         ...headers,
-         authorization: token ? `Bearer ${token}` : "",
-      },
-   };
-});
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const apolloClient = new ApolloClient({
+   uri: import.meta.env.VITE_API_URL,
    cache: new InMemoryCache(),
-   link: from([authLink, httpLink]),
+   headers: {
+      Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+   },
 });
 
 export { apolloClient };

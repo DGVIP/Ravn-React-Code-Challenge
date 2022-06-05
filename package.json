@@ -7,7 +7,7 @@
       "test": "vitest",
       "build": "tsc && vite build",
       "preview": "vite preview",
-      "prepare": "husky install && graphql-codegen",
+      "prepare": "husky install",
       "graphql:codegen": "graphql-codegen",
       "lint": "eslint **/*.{ts,tsx}",
       "lint:fix": "eslint --fix **/*.{ts,tsx}",
@@ -15,13 +15,19 @@
    },
    "dependencies": {
       "@apollo/client": "^3.6.6",
+      "@hookform/resolvers": "^2.9.0",
+      "@types/react-datepicker": "^4.4.2",
       "framer-motion": "^6.3.7",
       "graphql": "^16.5.0",
       "react": "^18.1.0",
+      "react-datepicker": "^4.8.0",
       "react-dom": "^18.1.0",
+      "react-hook-form": "^7.31.3",
       "react-icons": "^4.4.0",
       "react-router-dom": "^6.3.0",
-      "styled-components": "^5.3.5"
+      "react-toastify": "^9.0.3",
+      "styled-components": "^5.3.5",
+      "yup": "^0.32.11"
    },
    "devDependencies": {
       "@graphql-codegen/add": "^3.1.1",

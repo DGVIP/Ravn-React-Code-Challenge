@@ -5,10 +5,12 @@ import {
    RiNotification3Line as NotificationIcon,
    RiCloseCircleLine as CloseIcon,
 } from "react-icons/ri";
-import avatar from "../../images/avatar.jpg";
-import { Avatar, AvatarContainer, Container, IconButton, Input } from "./styles";
+import Avatar from "../common/Avatar";
+import { useAuth } from "../../contexts/auth/AuthContext";
+import { Container, IconButton, Input } from "./styles";
 
 function Searchbar() {
+   const { user } = useAuth();
    const [query, setQuery] = useState("");
 
    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +25,7 @@ function Searchbar() {
       <Container>
          <SearchIcon size={24} style={{ minWidth: "24px" }} />
          <Input
+            type="text"
             placeholder="Search"
             className="font-md-regular"
             value={query}
@@ -36,9 +39,7 @@ function Searchbar() {
          <IconButton>
             <NotificationIcon size={24} />
          </IconButton>
-         <AvatarContainer>
-            <Avatar src={avatar} alt="Profile picture" />
-         </AvatarContainer>
+         <Avatar src={user?.avatar} size={40} />
       </Container>
    );
 }

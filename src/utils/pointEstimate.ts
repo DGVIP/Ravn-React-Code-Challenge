@@ -10,5 +10,6 @@ const pointEstimateValues = {
 
 export function formatPointEstimate(pointEstimate: PointEstimate) {
    const pointEstimateValue = pointEstimateValues[pointEstimate].toString();
-   return `${pointEstimateValue} Points`;
+   const unit = pointEstimateValue === "1" ? "Point" : "Points";
+   return `${pointEstimateValue} ${unit}`;
 }
