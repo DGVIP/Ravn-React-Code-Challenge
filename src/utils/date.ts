@@ -12,6 +12,12 @@ const dueDateBackgroundColor = {
    overdue: "#da584b19",
 };
 
+const dueDateIndicatorColor = {
+   due: theme.palette.secondary[4],
+   almost: theme.palette.tertiary[4],
+   overdue: theme.palette.primary[4],
+};
+
 function getDateDiff(date: string): number {
    const today = new Date();
    const dateTime = new Date(date);
@@ -74,5 +80,18 @@ export function getDueDateBackgroundColor(dueDate: string): string {
       return dueDateBackgroundColor.almost;
    } else {
       return dueDateBackgroundColor.due;
+   }
+}
+
+export function getDueDateIndicatorColor(dueDate: string): string {
+   const timeLimit = 0;
+   const timeLeft = getDateDiff(dueDate);
+
+   if (timeLeft < timeLimit) {
+      return dueDateIndicatorColor.overdue;
+   } else if (timeLeft < 2) {
+      return dueDateIndicatorColor.almost;
+   } else {
+      return dueDateIndicatorColor.due;
    }
 }

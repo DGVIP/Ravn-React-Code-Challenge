@@ -19,7 +19,7 @@ function Navigation() {
             </Route>
             <Route path="/not-found" element={<NotFound />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="*" element={<Navigate to="/404" replace />} />
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
          </Routes>
       </Router>
    );

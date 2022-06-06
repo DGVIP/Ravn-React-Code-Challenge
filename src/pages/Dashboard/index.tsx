@@ -57,8 +57,6 @@ function Dashboard() {
       return <TasksEmpty />;
    }
 
-   console.log({ tasks: data.tasks });
-
    const taskData = formatTasks(data.tasks);
 
    const handleOnDragEnd = async (result: DropResult) => {

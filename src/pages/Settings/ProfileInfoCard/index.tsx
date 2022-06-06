@@ -24,14 +24,14 @@ function ProfileInfoCard() {
             <Avatar src={user?.avatar} size={120} />
             <FieldContainer>
                {userInfo.map((info) => (
-                  <>
-                     <Text as="dt" size="lg" variant="body" weight="bold">
-                        {info.label}
-                     </Text>
-                     <Text as="dd" size="md" variant="body" weight="regular">
-                        {info.value}
-                     </Text>
-                  </>
+                  <Text key={info.label} as="dt" size="lg" variant="body" weight="bold">
+                     {info.label}
+                  </Text>
+               ))}
+               {userInfo.map((info, index) => (
+                  <Text key={index} as="dd" size="md" variant="body" weight="regular">
+                     {info.value}
+                  </Text>
                ))}
             </FieldContainer>
          </InfoContainer>

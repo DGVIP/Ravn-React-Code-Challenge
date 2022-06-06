@@ -29,7 +29,6 @@ export function formatTasks(tasks: GetTasksQuery["tasks"]): TaskData {
 
    (Object.keys(newTaskList) as Array<keyof typeof newTaskList>).forEach((key) => {
       newTaskList[key].sort((a, b) => {
-         console.log(`${a.position} >= ${b.position}: ${a.position >= b.position}`);
          return a.position > b.position ? 1 : -1;
       });
    });

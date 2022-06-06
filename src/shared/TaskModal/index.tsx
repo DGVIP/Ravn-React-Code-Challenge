@@ -193,6 +193,8 @@ function Modal() {
                   __typename: "Task",
                   id: task.id,
                   name: formData.name,
+                  status: task.status,
+                  position: task.position,
                   dueDate: formData.dueDate,
                   tags: formData.tags as TaskTag[],
                   pointEstimate: formData.pointEstimate as PointEstimate,

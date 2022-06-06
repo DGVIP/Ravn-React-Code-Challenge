@@ -3,7 +3,7 @@ import { useGetTasksQuery } from "../../graphql";
 import { TasksLoading } from "../../shared/TasksLayout/TasksLoading";
 import { TasksError } from "../../shared/TasksLayout/TasksError";
 import { TasksEmpty } from "../../shared/TasksLayout/TasksEmpty/TasksEmpty";
-import { Container, Header, Heading } from "./styles";
+import { Container, Content, Header, Heading } from "./styles";
 import { Text } from "../../shared/common/Text";
 import { TaskTable } from "./TaskTable";
 
@@ -54,9 +54,11 @@ function MyTasks() {
                </Heading>
             ))}
          </Header>
-         {(Object.keys(taskData) as Array<keyof typeof taskData>).map((status) => (
-            <TaskTable key={status} status={status} taskList={taskData[status]} />
-         ))}
+         <Content>
+            {(Object.keys(taskData) as Array<keyof typeof taskData>).map((status) => (
+               <TaskTable key={status} status={status} taskList={taskData[status]} />
+            ))}
+         </Content>
       </Container>
    );
 }

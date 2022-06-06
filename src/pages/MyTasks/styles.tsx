@@ -8,15 +8,15 @@ export const GridLayout = css`
 
 export const Container = styled.div`
    width: 100%;
-   height: 100%;
    display: flex;
    flex-direction: column;
    gap: 16px;
+   overflow: hidden;
 `;
 
 export const Header = styled.div`
    ${GridLayout}
-   height: 56px;
+   min-height: 56px;
    overflow: hidden;
    border-radius: 4px;
    background-color: ${(props) => props.theme.palette.neutral[4]};
@@ -29,4 +29,8 @@ export const Header = styled.div`
 
 export const Heading = styled.span`
    padding: 16px;
+`;
+
+export const Content = styled(Container)`
+   overflow-y: auto;
 `;

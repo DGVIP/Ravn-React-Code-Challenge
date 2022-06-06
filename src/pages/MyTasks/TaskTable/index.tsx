@@ -3,9 +3,11 @@ import { RiArrowDownSFill as ArrowDownIcon, RiArrowUpSFill as ArrowUpIcon } from
 import { TaskItem } from "../../../utils/tasks";
 import { Text } from "../../../shared/common/Text";
 import { Avatar } from "../../../shared/common/Avatar";
-import { Table, Head, Body, Row, Cell } from "./styles";
+import { Table, Head, Body, Row, Cell, TaskNameCell } from "./styles";
 import { formatPointEstimate } from "../../../utils/pointEstimate";
-import { formatDueDate, getDueDateFontColor } from "../../../utils/date";
+import { formatDueDate, getDueDateFontColor, getDueDateIndicatorColor } from "../../../utils/date";
+import { Tag } from "../../Dashboard/TaskCard/styles";
+import { getTagBackgroundColor, getTagFontColor } from "../../../utils/tag";
 
 interface Props {
    status: string;
@@ -34,19 +36,28 @@ function TaskTable(props: Props) {
          <Body isExpanded={isExpanded}>
             {taskList.map((task) => (
                <Row key={task.id}>
-                  <Cell>
+                  <TaskNameCell variant={getDueDateIndicatorColor(task.dueDate)}>
                      <Text variant="body" size="md" weight="regular">
                         {task.position} {task.name}
                      </Text>
-                  </Cell>
+                  </TaskNameCell>
                   <Cell>
-                     {task.tags.map((tag) => (
-                        <span key={tag}>
-                           <Text variant="body" size="md" weight="regular">
-                              {tag}
-                           </Text>
-                        </span>
-                     ))}
+                     <Tag
+                        color={getTagFontColor(task.tags[0])}
+                        backgroundColor={getTagBackgroundColor(task.tags[0])}
+                     >
+                        <Text variant="body" size="md" weight="regular">
+                           {task.tags[0]}
+                        </Text>
+                     </Tag>
+                     {task.tags.length > 1 && (
+                        <Tag
+                           color={getTagFontColor(task.tags[0])}
+                           backgroundColor={getTagBackgroundColor(task.tags[0])}
+                        >
+                           +{task.tags.length - 1}
+                        </Tag>
+                     )}
                   </Cell>
                   <Cell>
                      <Text variant="body" size="md" weight="regular">

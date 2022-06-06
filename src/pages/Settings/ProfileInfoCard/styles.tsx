@@ -11,15 +11,16 @@ export const Container = styled.div`
 `;
 
 export const InfoContainer = styled.div`
-   display: grid;
-   grid-template-columns: repeat(6, 1fr);
+   display: flex;
+   flex-direction: row;
    gap: 16px;
 `;
 
 export const FieldContainer = styled.div`
-   display: flex;
-   flex-direction: column;
-   gap: 8px;
-   align-items: center;
-   justify-content: center;
+   display: grid;
+   gap: 16px;
+   align-items: flex-start;
+   justify-items: center;
+   text-align: center;
+   grid-template-columns: repeat(5, 1fr);
 `;
