@@ -14,7 +14,7 @@
 
 6. [Development Process](#development-process)
 
-7. [Testing](#testing)
+7. [TODO](#todo)
 
 ## Description
 
@@ -27,6 +27,8 @@ Once the repository is cloned, to install the dependencies, run the following co
 ```bash
 $ yarn install
 ```
+
+Create a new .env file and add the variables specified in the .env.example file or set the environment variables manually.
 
 Then, you can run the following command to start the development server:
 
@@ -48,21 +50,50 @@ Then, you can run the following command to start the production server:
 $ yarn run preview
 ```
 
-## Stack
+You can also try the [live demo](https://ravn-react-code-challenge-rm6nncmha-dgvip.vercel.app/) hosted on Vercel.
 
--  **Routing:** React Router
+## Project Structure
+
+```
+project/
+├── .github/
+│   └── workflows/   # Scripts for gh-actions
+├── .husky/          # Git hooks configuration (ex: pre-commit).
+├── src/
+│   ├── app/         # App component
+│   ├── configs/     # Configuration files
+│   ├── contexts/    # Global state management
+│   ├── graphql/     # GraphQL queries and mutations
+│   ├── hooks/       # Custom hooks
+│   ├── images/
+│   ├── navigation/  # Routing configuration
+│   ├── pages/       # views with its scoped components
+│   ├── shared/      # Layout and shared components
+│   │   └── common/  # Reusable components
+│   ├── types/       # Global types and Definitions
+│   ├── utils/       # Utility reusable functions
+│   └── main.tsx     # Main entry point
+└── .env.example     # Environment variables example
+```
+
+Example Component Structure:
+
+```
+scope/                  # Scope of the component
+└── Component/          # PascalCase container directory
+    ├── SubComponent/   # Scoped Component
+    │   └── ...         # repeat structure
+    ├── index.tsx       # Component definition
+    ├── styles.tsx      # Styled components
+    ├── tests.ts        # Component unit tests
+    └── types.ts        # Scoped type definitions
+```
+
+## Technologies
 
 -  **Styles:** Styled Components
 
    -  I decided to use this approach for styling because this way it is easier to separate the styling from the semantic markup, making the components easier to read and understand.
-
--  **Testing:** Vitest
-
-   -  I used this tool to test the components and the functionality of the app because it integrates well with the bundler used for the project.
-
-## Project Structure
-
-## Technologies
 
 -  **Vite:** Tool for bundling the project
 
@@ -74,7 +105,7 @@ $ yarn run preview
 
    -  I used this to format the code before committing to the repository.
 
--  **ESLint:** Linter
+-  **ESLint (Standard):** Linter
 
    -  It is used to check the code for errors and to prevent them from being committed to the repository.
 
@@ -88,6 +119,62 @@ $ yarn run preview
 
 -  **React Icons:** used to create the Remix icons
 
+-  **React Hook Form:** used to manage the forms integrate with the validation library without handling a complex state.
+
+-  **Yup:** used to validate the form
+
+-  **React Beautiful DnD:** used to make the drag and drop of the task cards
+
+-  **React toastify:** used to show the notifications on success or error of the actions
+
+-  **GrahpQL CodeGen:** used to retrieve the most updated schema from the server and generate hooks using Apollo Client based on the GraphQL queries and mutations defined.
+
 ## Development Process
 
-## Testing
+First, I created the project with vite, then, added eslint standard, prettier, and lint-staged (Husky) for the git hooks.
+
+After installing the neccesary dependencies for the base prototype (react-router-dom, styled-components, framer-motion, react-icons), I created the project structure and created the dashboard interface without functionality.
+
+![Dashboard Prototype](./challenge/task-1/dashboard-mock.png)
+
+Then, I added the libraries neccesary for fetching the data from the GraphQL server (@apollo/client, graphql-codegen) and fetched the tasks from the server. Also, I added loading, error, and empty pages fot the tasks.
+
+![Dashboard Functional](./challenge/task-2/dashboard-functional.png)
+![Tasks Loading](./challenge/task-2/task-loading.png)
+![Tasks Empty](./challenge/task-2/task-empty.png)
+![Tasks Error](./challenge/task-2/task-error.png)
+
+Once the tasks could be fetched, I started working on the create task functionality.
+
+![Create Task Modal](./challenge/task-3/create-modal.png)
+![Create Task Modal Date](./challenge/task-3/modal-date.png)
+![Create Task Modal Users](./challenge/task-3/modal-users.png)
+
+Then, I added the functionality to update and delete a task, and added **cache modifying** and **optimistic responses** to make the app more reactive.
+
+![Options Menu](./challenge/task-4/options-menu.png)
+![Update Task Modal](./challenge/task-4/update-modal.png)
+![Delete Task Modal](./challenge/task-4/confirm-modal.png)
+
+Finally I created the table view of the tasks, and added a new view called Settings to display the user profile.
+
+![Tasks Table](./challenge/task-5/task-table.png)
+![User Profile](./challenge/task-5/user-profile.png)
+
+For the quality assurance aspect of the project, I created a simple **Github Actions** workflow to lint the code and deploy it to Vercel. The workflow is configured to run every time a commit or a pull request is made. There is still pending to configure the workflow to run the unit and end-to-end tests.
+
+![Github Workflow](./challenge/task-5/github-actions.png)
+
+## Todo List
+
+-  Add tests
+
+-  Add filter tasks functionality
+
+-  Improve drag & drop task cards behavior
+
+-  Abstract more components like the Button
+
+-  Add aliases for the project main folders to reduce import statements
+
+-  Refactor the code to adjust to the final project requirements
