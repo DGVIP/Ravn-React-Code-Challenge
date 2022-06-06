@@ -50,7 +50,7 @@ Then, you can run the following command to start the production server:
 $ yarn run preview
 ```
 
-You can also try the [live demo](https://ravn-react-code-challenge-rm6nncmha-dgvip.vercel.app/) hosted on Vercel.
+You can also try the [live demo](https://ravn-react-code-challenge.vercel.app/) hosted on Vercel.
 
 ## Project Structure
 
