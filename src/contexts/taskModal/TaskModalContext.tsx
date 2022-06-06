@@ -3,10 +3,14 @@ import { TaskItem } from "../../utils/tasks";
 
 interface TaskModalContextValue {
    task: TaskItem | null;
-   isModalOpen: boolean;
+   taskId: string | null;
+   isFormModalOpen: boolean;
+   isDeleteModalOpen: boolean;
    openCreateModal: () => void;
    openUpdateModal: (task: TaskItem) => void;
-   closeModal: () => void;
+   closeFormModal: () => void;
+   openDeleteModal: (taskId: string) => void;
+   closeDeleteModal: () => void;
 }
 
 const TaskModalContext = createContext<TaskModalContextValue | null>(null);

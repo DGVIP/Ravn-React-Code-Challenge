@@ -19,7 +19,9 @@ function getDateDiff(date: string): number {
    return Math.trunc((today.getTime() - dateTime.getTime()) / day) * -1;
 }
 
-export function formatDate(date: string) {
+export function formatDate(date?: string) {
+   if (!date) return "N/A";
+
    const options: Intl.DateTimeFormatOptions = {
       day: "numeric",
       month: "short",

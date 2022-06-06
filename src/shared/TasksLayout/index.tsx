@@ -5,14 +5,16 @@ import { TaskModal } from "../TaskModal";
 import { useTaskModal } from "../../contexts/taskModal/TaskModalContext";
 import { TaskModalProvider } from "../../contexts/taskModal/TaskModalProvider";
 import { AnimatePresence } from "framer-motion";
+import { ConfirmModal } from "../ConfirmModal";
 
 function TasksLayout() {
-   const { isModalOpen } = useTaskModal();
+   const { isFormModalOpen, isDeleteModalOpen } = useTaskModal();
    return (
       <Container>
          <Topbar />
          <Outlet />
-         <AnimatePresence>{isModalOpen && <TaskModal />}</AnimatePresence>
+         <AnimatePresence>{isFormModalOpen && <TaskModal />}</AnimatePresence>
+         <AnimatePresence>{isDeleteModalOpen && <ConfirmModal />}</AnimatePresence>
       </Container>
    );
 }

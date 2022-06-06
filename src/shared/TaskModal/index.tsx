@@ -82,7 +82,7 @@ const taskTagOptions: TaskTag[] = [
 ];
 
 function Modal() {
-   const { task, closeModal } = useTaskModal();
+   const { task, closeFormModal } = useTaskModal();
    const [openMenu, setOpenMenu] = useState("");
 
    const { data: usersData } = useGetUsersQuery();
@@ -126,6 +126,8 @@ function Modal() {
 
    const handleCreateTask = async (formData: FormData) => {
       try {
+         const assignee = usersData?.users.find((user) => user.id === formData.assigneeId);
+
          await createTask({
             variables: {
                input: {
@@ -151,14 +153,14 @@ function Modal() {
                   assignee: {
                      __typename: "User",
                      id: formData.assigneeId,
-                     avatar: usersData?.users.find((user) => user.id === formData.assigneeId)
-                        ?.avatar,
+                     avatar: assignee?.avatar,
+                     fullName: assignee?.fullName || "-",
                   },
                },
             },
          });
          toast.success("Task Created");
-         closeModal();
+         closeFormModal();
       } catch {
          toast.error("Error creating task", { toastId: "task-modal-error" });
       }
@@ -169,6 +171,9 @@ function Modal() {
          if (!task) {
             throw new Error("Task not found");
          }
+
+         const assignee = usersData?.users.find((user) => user.id === formData.assigneeId);
+
          await updateTask({
             variables: {
                input: {
@@ -189,19 +194,19 @@ function Modal() {
                   id: task.id,
                   name: formData.name,
                   dueDate: formData.dueDate,
+                  tags: formData.tags as TaskTag[],
+                  pointEstimate: formData.pointEstimate as PointEstimate,
                   assignee: {
                      __typename: "User",
                      id: formData.assigneeId,
-                     avatar: usersData?.users.find((user) => user.id === formData.assigneeId)
-                        ?.avatar,
+                     avatar: assignee?.avatar,
+                     fullName: assignee?.fullName || "-",
                   },
-                  pointEstimate: formData.pointEstimate as PointEstimate,
-                  tags: formData.tags as TaskTag[],
                },
             },
          });
          toast.success("Task Updated");
-         closeModal();
+         closeFormModal();
       } catch {
          toast.error("Task not found");
       }
@@ -209,7 +214,7 @@ function Modal() {
 
    return (
       <Backdrop
-         onClick={closeModal}
+         onClick={closeFormModal}
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          exit={{ opacity: 0 }}
@@ -333,7 +338,7 @@ function Modal() {
                </TagButtonContainer>
             </TagsContainer>
             <ActionsContainer>
-               <CancelButton type="button" onClick={closeModal}>
+               <CancelButton type="button" onClick={closeFormModal}>
                   <Text size="md" variant="body" weight="regular">
                      Cancel
                   </Text>

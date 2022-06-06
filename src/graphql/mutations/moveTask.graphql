@@ -1,4 +1,4 @@
-mutation UpdateTask($input: UpdateTaskInput!) {
+mutation MoveTask($input: UpdateTaskInput!) {
    updateTask(input: $input) {
       id
       name

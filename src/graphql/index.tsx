@@ -155,7 +155,12 @@ export type CreateTaskMutation = {
       dueDate: string;
       position: number;
       pointEstimate: PointEstimate;
-      assignee?: { __typename?: "User"; id: string; avatar?: string | null } | null;
+      assignee?: {
+         __typename?: "User";
+         id: string;
+         avatar?: string | null;
+         fullName: string;
+      } | null;
    };
 };
 
@@ -166,6 +171,30 @@ export type DeleteTaskMutationVariables = Exact<{
 export type DeleteTaskMutation = {
    __typename?: "Mutation";
    deleteTask: { __typename?: "Task"; id: string };
+};
+
+export type MoveTaskMutationVariables = Exact<{
+   input: UpdateTaskInput;
+}>;
+
+export type MoveTaskMutation = {
+   __typename?: "Mutation";
+   updateTask: {
+      __typename?: "Task";
+      id: string;
+      name: string;
+      tags: Array<TaskTag>;
+      status: Status;
+      dueDate: string;
+      position: number;
+      pointEstimate: PointEstimate;
+      assignee?: {
+         __typename?: "User";
+         id: string;
+         avatar?: string | null;
+         fullName: string;
+      } | null;
+   };
 };
 
 export type UpdateTaskMutationVariables = Exact<{
@@ -179,9 +208,16 @@ export type UpdateTaskMutation = {
       id: string;
       name: string;
       tags: Array<TaskTag>;
+      status: Status;
       dueDate: string;
+      position: number;
       pointEstimate: PointEstimate;
-      assignee?: { __typename?: "User"; id: string; avatar?: string | null } | null;
+      assignee?: {
+         __typename?: "User";
+         id: string;
+         avatar?: string | null;
+         fullName: string;
+      } | null;
    };
 };
 
@@ -214,7 +250,12 @@ export type GetTasksQuery = {
       dueDate: string;
       position: number;
       pointEstimate: PointEstimate;
-      assignee?: { __typename?: "User"; id: string; avatar?: string | null } | null;
+      assignee?: {
+         __typename?: "User";
+         id: string;
+         avatar?: string | null;
+         fullName: string;
+      } | null;
    }>;
 };
 
@@ -238,6 +279,7 @@ export const CreateTaskDocument = gql`
          assignee {
             id
             avatar
+            fullName
          }
       }
    }
@@ -323,17 +365,75 @@ export type DeleteTaskMutationOptions = Apollo.BaseMutationOptions<
    DeleteTaskMutation,
    DeleteTaskMutationVariables
 >;
+export const MoveTaskDocument = gql`
+   mutation MoveTask($input: UpdateTaskInput!) {
+      updateTask(input: $input) {
+         id
+         name
+         tags
+         status
+         dueDate
+         position
+         pointEstimate
+         assignee {
+            id
+            avatar
+            fullName
+         }
+      }
+   }
+`;
+export type MoveTaskMutationFn = Apollo.MutationFunction<
+   MoveTaskMutation,
+   MoveTaskMutationVariables
+>;
+
+/**
+ * __useMoveTaskMutation__
+ *
+ * To run a mutation, you first call `useMoveTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveTaskMutation, { data, loading, error }] = useMoveTaskMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useMoveTaskMutation(
+   baseOptions?: Apollo.MutationHookOptions<MoveTaskMutation, MoveTaskMutationVariables>
+) {
+   const options = { ...defaultOptions, ...baseOptions };
+   return Apollo.useMutation<MoveTaskMutation, MoveTaskMutationVariables>(
+      MoveTaskDocument,
+      options
+   );
+}
+export type MoveTaskMutationHookResult = ReturnType<typeof useMoveTaskMutation>;
+export type MoveTaskMutationResult = Apollo.MutationResult<MoveTaskMutation>;
+export type MoveTaskMutationOptions = Apollo.BaseMutationOptions<
+   MoveTaskMutation,
+   MoveTaskMutationVariables
+>;
 export const UpdateTaskDocument = gql`
    mutation UpdateTask($input: UpdateTaskInput!) {
       updateTask(input: $input) {
          id
          name
          tags
+         status
          dueDate
+         position
          pointEstimate
          assignee {
             id
             avatar
+            fullName
          }
       }
    }
@@ -435,6 +535,7 @@ export const GetTasksDocument = gql`
          assignee {
             id
             avatar
+            fullName
          }
       }
    }

@@ -1,4 +1,3 @@
-import { AnimatePresence } from "framer-motion";
 import {
    RiMoreFill as OptionsIcon,
    RiAttachment2 as AttachmentIcon,
@@ -6,11 +5,12 @@ import {
    RiChat3Line as CommentIcon,
    RiAlarmLine as TimerIcon,
 } from "react-icons/ri";
+import { Draggable } from "react-beautiful-dnd";
+
 import { Text } from "../../../shared/common/Text";
 import { Avatar } from "../../../shared/common/Avatar";
 import { OptionsMenu } from "./OptionsMenu";
 import { useRef, useState } from "react";
-import { ConfirmModal } from "../ConfirmModal";
 import { TaskItem } from "../../../utils/tasks";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { formatPointEstimate } from "../../../utils/pointEstimate";
@@ -28,17 +28,20 @@ import {
    TagsContainer,
    TimerContainer,
 } from "./styles";
+import { useTaskModal } from "../../../contexts/taskModal/TaskModalContext";
 
 interface Props {
    task: TaskItem;
+   index: number;
 }
 
 function TaskCard(props: Props) {
-   const { task } = props;
+   const { task, index } = props;
+
+   const { openDeleteModal } = useTaskModal();
 
    const optionsMenuRef = useRef<HTMLDivElement>(null);
    const [isOpenOptionsMenu, setIsOpenOptionsMenu] = useState(false);
-   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
 
    const toggleOptionsMenu = () => {
       setIsOpenOptionsMenu((prev) => !prev);
@@ -49,88 +52,85 @@ function TaskCard(props: Props) {
    });
 
    return (
-      <Container>
-         <Header>
-            <Text size="lg" weight="bold" variant="body">
-               {task.name}
-            </Text>
-            <div ref={optionsMenuRef}>
-               <IconButton onClick={toggleOptionsMenu}>
-                  <OptionsIcon size={24} />
-               </IconButton>
-               {isOpenOptionsMenu && (
-                  <OptionsMenu
-                     task={task}
-                     openConfirmModal={() => setIsOpenConfirmModal(true)}
-                     closeOptionsMenu={() => {
-                        setIsOpenOptionsMenu(false);
-                     }}
-                  />
-               )}
-            </div>
-         </Header>
-
-         <Content>
-            <TimerContainer>
-               <Text size="md" weight="bold" variant="body">
-                  {formatPointEstimate(task.pointEstimate)}
-               </Text>
-               <Tag
-                  color={getDueDateFontColor(task.dueDate)}
-                  backgroundColor={getDueDateBackgroundColor(task.dueDate)}
-               >
-                  <TimerIcon size={24} />
-                  <Text size="md" weight="bold" variant="body">
-                     {formatDueDate(task.dueDate)}
+      <Draggable draggableId={task.id} index={index}>
+         {(provided) => (
+            <Container
+               ref={provided.innerRef}
+               {...provided.draggableProps}
+               {...provided.dragHandleProps}
+            >
+               <Header>
+                  <Text size="lg" weight="bold" variant="body">
+                     {task.name}
                   </Text>
-               </Tag>
-            </TimerContainer>
-            <TagsContainer>
-               {task.tags.map((tag, index) => (
-                  <Tag
-                     key={index}
-                     color={getTagFontColor(tag)}
-                     backgroundColor={getTagBackgroundColor(tag)}
-                  >
-                     {tag}
-                  </Tag>
-               ))}
-            </TagsContainer>
-         </Content>
+                  <div ref={optionsMenuRef}>
+                     <IconButton onClick={toggleOptionsMenu}>
+                        <OptionsIcon size={24} />
+                     </IconButton>
+                     {isOpenOptionsMenu && (
+                        <OptionsMenu
+                           task={task}
+                           openConfirmModal={() => openDeleteModal(task.id)}
+                           closeOptionsMenu={() => {
+                              setIsOpenOptionsMenu(false);
+                           }}
+                        />
+                     )}
+                  </div>
+               </Header>
 
-         <Footer>
-            <Avatar size={32} src={task.assignee?.avatar} />
+               <Content>
+                  <TimerContainer>
+                     <Text size="md" weight="bold" variant="body">
+                        {formatPointEstimate(task.pointEstimate)}
+                     </Text>
+                     <Tag
+                        color={getDueDateFontColor(task.dueDate)}
+                        backgroundColor={getDueDateBackgroundColor(task.dueDate)}
+                     >
+                        <TimerIcon size={24} />
+                        <Text size="md" weight="bold" variant="body">
+                           {formatDueDate(task.dueDate)}
+                        </Text>
+                     </Tag>
+                  </TimerContainer>
+                  <TagsContainer>
+                     {task.tags.map((tag, index) => (
+                        <Tag
+                           key={index}
+                           color={getTagFontColor(tag)}
+                           backgroundColor={getTagBackgroundColor(tag)}
+                        >
+                           {tag}
+                        </Tag>
+                     ))}
+                  </TagsContainer>
+               </Content>
 
-            <ReactionsContainer>
-               <ReactionButton>
-                  <AttachmentIcon />
-               </ReactionButton>
-               <ReactionButton>
-                  <Text size="md" weight="regular" variant="body">
-                     3
-                  </Text>
-                  <BranchIcon />
-               </ReactionButton>
-               <ReactionButton>
-                  <Text size="md" weight="regular" variant="body">
-                     5
-                  </Text>
-                  <CommentIcon />
-               </ReactionButton>
-            </ReactionsContainer>
-         </Footer>
+               <Footer>
+                  <Avatar size={32} src={task.assignee?.avatar} />
 
-         <AnimatePresence>
-            {isOpenConfirmModal && (
-               <ConfirmModal
-                  taskId={task.id}
-                  handleCloseModal={() => {
-                     setIsOpenConfirmModal(false);
-                  }}
-               />
-            )}
-         </AnimatePresence>
-      </Container>
+                  <ReactionsContainer>
+                     <ReactionButton>
+                        <AttachmentIcon />
+                     </ReactionButton>
+                     <ReactionButton>
+                        <Text size="md" weight="regular" variant="body">
+                           3
+                        </Text>
+                        <BranchIcon />
+                     </ReactionButton>
+                     <ReactionButton>
+                        <Text size="md" weight="regular" variant="body">
+                           5
+                        </Text>
+                        <CommentIcon />
+                     </ReactionButton>
+                  </ReactionsContainer>
+               </Footer>
+            </Container>
+         )}
+      </Draggable>
    );
 }
 

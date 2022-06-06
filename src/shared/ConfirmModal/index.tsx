@@ -1,21 +1,18 @@
 import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
-import { GetTasksDocument, GetTasksQuery, useDeleteTaskMutation } from "../../../graphql";
-import { Text } from "../../../shared/common/Text";
+import { useTaskModal } from "../../contexts/taskModal/TaskModalContext";
+import { GetTasksDocument, GetTasksQuery, useDeleteTaskMutation } from "../../graphql";
+import { Text } from "../common/Text";
 import { ActionsContainer, Backdrop, CancelButton, Container, DeleteButton } from "./styles";
 
-interface Props {
-   taskId: string;
-   handleCloseModal: () => void;
-}
-
-function ConfirmModal(props: Props) {
+function ConfirmModal() {
    const container = document.getElementById("modal") as HTMLDivElement;
-   return createPortal(<Modal {...props} />, container);
+   return createPortal(<Modal />, container);
 }
 
-function Modal(props: Props) {
-   const { taskId, handleCloseModal } = props;
+function Modal() {
+   const { taskId, closeDeleteModal } = useTaskModal();
+
    const [deleteTask] = useDeleteTaskMutation({
       update: (cache, result) => {
          const data = cache.readQuery<GetTasksQuery>({ query: GetTasksDocument });
@@ -31,6 +28,10 @@ function Modal(props: Props) {
    });
 
    const handleDeleteTask = async () => {
+      if (!taskId) {
+         throw new Error("Task id is not defined");
+      }
+
       try {
          await deleteTask({
             variables: {
@@ -47,7 +48,7 @@ function Modal(props: Props) {
             },
          });
          toast.success("Task deleted successfully");
-         handleCloseModal();
+         closeDeleteModal();
       } catch {
          toast.error("Error deleting task");
       }
@@ -55,7 +56,7 @@ function Modal(props: Props) {
 
    return (
       <Backdrop
-         onClick={handleCloseModal}
+         onClick={closeDeleteModal}
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          exit={{ opacity: 0 }}
@@ -73,7 +74,7 @@ function Modal(props: Props) {
                This action can not be undone.
             </Text>
             <ActionsContainer>
-               <CancelButton className="font-md-regular" onClick={handleCloseModal}>
+               <CancelButton className="font-md-regular" onClick={closeDeleteModal}>
                   <Text size="md" variant="body" weight="regular">
                      Cancel
                   </Text>

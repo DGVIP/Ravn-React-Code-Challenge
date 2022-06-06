@@ -1,11 +1,18 @@
-import { GetTasksQuery, Status } from "../graphql";
+import { GetTasksQuery } from "../graphql";
 import { ArrayItem } from "../types";
 
-export type TaskList = Record<Status, GetTasksQuery["tasks"]>;
 export type TaskItem = ArrayItem<GetTasksQuery["tasks"]>;
 
-export function formatTasks(tasks: GetTasksQuery["tasks"]): TaskList {
-   const newTaskList: TaskList = {
+export interface TaskData {
+   BACKLOG: TaskItem[];
+   TODO: TaskItem[];
+   IN_PROGRESS: TaskItem[];
+   DONE: TaskItem[];
+   CANCELLED: TaskItem[];
+}
+
+export function formatTasks(tasks: GetTasksQuery["tasks"]): TaskData {
+   const newTaskList: TaskData = {
       BACKLOG: [],
       TODO: [],
       IN_PROGRESS: [],
@@ -18,6 +25,13 @@ export function formatTasks(tasks: GetTasksQuery["tasks"]): TaskList {
       const newTaskColumn = newTaskList[status];
       newTaskColumn.push(task);
       newTaskList[status] = newTaskColumn;
+   });
+
+   (Object.keys(newTaskList) as Array<keyof typeof newTaskList>).forEach((key) => {
+      newTaskList[key].sort((a, b) => {
+         console.log(`${a.position} >= ${b.position}: ${a.position >= b.position}`);
+         return a.position > b.position ? 1 : -1;
+      });
    });
 
    return newTaskList;
