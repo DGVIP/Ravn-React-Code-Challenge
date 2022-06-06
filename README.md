@@ -1,20 +1,20 @@
 # Ravn React Code Challenge
 
+[![Deployment Pipeline](https://github.com/DGVIP/ravn-react-code-challenge/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/DGVIP/ravn-react-code-challenge/actions/workflows/pipeline.yml)
+
 ## Table of Contents
 
 1. [Description](#description)
 
 2. [Setup/Running instructions](#setuprunning-instructions)
 
-3. [Stack](#stack)
+3. [Project Structure](#development-process)
 
-4. [Project Structure](#structure)
+4. [Technologies](#technologies)
 
-5. [Technologies](#technologies)
+5. [Development Process](#development-process)
 
-6. [Development Process](#development-process)
-
-7. [TODO](#todo)
+6. [TODO](#todo-list)
 
 ## Description
 
