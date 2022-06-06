@@ -1,5 +1,7 @@
 # Ravn React Code Challenge
 
+[![Deployment Pipeline](https://github.com/DGVIP/ravn-react-code-challenge/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/DGVIP/ravn-react-code-challenge/actions/workflows/pipeline.yml)
+
 ## Table of Contents
 
 1. [Description](#description)
